@@ -40,8 +40,9 @@ public class BinaryTreeMain {
             return false; // Do nothing -> element is not in tree
         }
 
-        elems.remove(n);
-        theTree.removeElem(n);
+        elems.remove(Integer.valueOf(n));
+        boolean treeEmpty = theTree.removeElem(n);
+        if (treeEmpty) theTree = null;
         return true;
     }
 
@@ -58,10 +59,6 @@ public class BinaryTreeMain {
     public float getDepth() {
         if (elems.isEmpty()) return 0;
         return theTree.getDepth();
-    }
-
-    public static void main(String[] args) {
-
     }
 
     public static class BinaryTree {

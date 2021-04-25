@@ -73,4 +73,80 @@ class BinaryTreeMainTest {
         assertEquals(2, target.getDepth());
     }
 
+    @Test
+    public void testRemoveElemFromEmptyTree() {
+        target = new BinaryTreeMain();
+
+        boolean treeChanged = target.removeElem(5);
+
+        assertFalse(treeChanged);
+        assertEquals(0, target.getNodes());
+        assertEquals(0, target.getMean());
+        assertEquals(0, target.getDepth());
+    }
+
+    @Test
+    public void testRemoveOnlyElemFromTree() {
+        target = new BinaryTreeMain();
+
+        boolean treeChanged1 = target.addElem(5);
+        boolean treeChanged2 = target.removeElem(5);
+
+        assertTrue(treeChanged1 && treeChanged2);
+        assertEquals(0, target.getNodes());
+        assertEquals(0, target.getMean());
+        assertEquals(0, target.getDepth());
+    }
+
+    @Test
+    public void testRemoveElemThatIsNotInTreeDoesNothing() {
+        target = new BinaryTreeMain();
+
+        target.addElem(5);
+        boolean treeChanged = target.removeElem(2);
+
+        assertFalse(treeChanged);
+        assertEquals(1, target.getNodes());
+        assertEquals(5, target.getMean());
+        assertEquals(1, target.getDepth());
+    }
+
+    @Test
+    public void testRemoveMultipleElems() {
+        target = new BinaryTreeMain();
+
+        instantiateBasicTree(target);
+
+        boolean treeChanged = target.removeElem(2);
+
+        assertTrue(treeChanged);
+        assertEquals(6, target.getNodes());
+        assertEquals(((float)33)/6, target.getMean());
+        assertEquals(3, target.getDepth());
+
+        treeChanged = target.removeElem(3);
+
+        assertTrue(treeChanged);
+        assertEquals(5, target.getNodes());
+        assertEquals(6, target.getMean());
+        assertEquals(3, target.getDepth());
+
+        target.removeElem(7);
+        target.removeElem(9);
+
+        assertEquals(3, target.getNodes());
+        assertEquals(((float)14)/3, target.getMean());
+        assertEquals(2, target.getDepth());
+    }
+
+    private void instantiateBasicTree(BinaryTreeMain target) {
+        target.addElem(5);
+        target.addElem(2);
+        target.addElem(8);
+        target.addElem(1);
+        target.addElem(3);
+        target.addElem(7);
+        target.addElem(9);
+    }
+
 }
