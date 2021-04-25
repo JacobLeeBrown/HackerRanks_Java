@@ -14,6 +14,7 @@ class BinaryTreeMainTest {
 
         assertEquals(0, target.getNodes());
         assertEquals(0, target.getMean());
+        assertEquals(0, target.getDepth());
     }
 
     @Test
@@ -25,6 +26,7 @@ class BinaryTreeMainTest {
         assertTrue(treeChanged);
         assertEquals(1, target.getNodes());
         assertEquals(5, target.getMean());
+        assertEquals(1, target.getDepth());
     }
 
     @Test
@@ -45,6 +47,30 @@ class BinaryTreeMainTest {
 
         float expectedMean = ((float) (1 + 2 + 3 + 5 + 7 + 8 + 9)) / 7f;
         assertEquals(expectedMean, target.getMean());
+
+        assertEquals(3, target.getDepth());
+    }
+
+    @Test
+    public void testTryingToAddElemAlreadyInTreeDoesNothing() {
+        target = new BinaryTreeMain();
+
+        boolean treeChanged1 = target.addElem(5);
+        boolean treeChanged2 = target.addElem(2);
+        boolean treeChanged3 = target.addElem(8);
+
+        assertTrue(treeChanged1 && treeChanged2 && treeChanged3);
+        assertEquals(3, target.getNodes());
+        assertEquals(5.0f, target.getMean());
+        assertEquals(2, target.getDepth());
+
+        // Try to re-add element that already exists
+        boolean treeChanged4 = target.addElem(2);
+
+        assertFalse(treeChanged4);
+        assertEquals(3, target.getNodes());
+        assertEquals(5.0f, target.getMean());
+        assertEquals(2, target.getDepth());
     }
 
 }

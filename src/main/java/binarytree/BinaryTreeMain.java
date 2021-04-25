@@ -55,6 +55,11 @@ public class BinaryTreeMain {
         return theTree.getMean();
     }
 
+    public float getDepth() {
+        if (elems.isEmpty()) return 0;
+        return theTree.getDepth();
+    }
+
     public static void main(String[] args) {
 
     }
