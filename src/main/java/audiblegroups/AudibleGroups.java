@@ -14,6 +14,23 @@ import static java.util.stream.Collectors.toList;
 
 public class AudibleGroups {
 
+    /*
+     * Given the number of users, n, and the n*n map of relationships between the users, determine the number of
+     * distinct groups, where a group is defined as all users that directly, or transitively, are related.
+     *
+     * For each cell, <i,j>, of the map, 0 means the i-th user is not related to user j, and 1 means they are related
+     * in some way. The map will always have 1 where i=j, since each user knows themself.
+     *
+     * Ex: Given 3 total users where user 1 is related to user 2 and neither are related to user 0, the input is
+     *
+     * 3
+     * 100
+     * 011
+     * 011
+     *
+     * Thus, there are 2 distinct groups: user 0 is their own group, while users 1 and 2 are part of the 2nd group.
+     */
+
     public static void main(String[] args) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
