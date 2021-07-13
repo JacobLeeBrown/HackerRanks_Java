@@ -1,15 +1,10 @@
 package isthereapath;
 
 import java.io.*;
-import java.math.*;
-import java.security.*;
-import java.text.*;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.function.*;
-import java.util.regex.*;
-import java.util.stream.*;
-import static java.util.stream.Collectors.joining;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
+
 import static java.util.stream.Collectors.toList;
 
 public class IsThereAPath {
@@ -52,7 +47,7 @@ public class IsThereAPath {
         })
                 .collect(toList());
 
-        boolean result = Result.isThereAPath(maze);
+        boolean result = isThereAPath(maze);
 
         bufferedWriter.write(String.valueOf(result));
         bufferedWriter.newLine();
@@ -61,19 +56,94 @@ public class IsThereAPath {
         bufferedWriter.close();
     }
 
-    static class Result {
+    /*
+     * Complete the 'isThereAPath' function below.
+     *
+     * The function is expected to return a BOOLEAN.
+     * The function accepts STRING_ARRAY maze as parameter.
+     */
 
-        /*
-         * Complete the 'isThereAPath' function below.
-         *
-         * The function is expected to return a BOOLEAN.
-         * The function accepts STRING_ARRAY maze as parameter.
-         */
-
-        public static boolean isThereAPath(List<String> maze) {
+    public static boolean isThereAPath(List<String> maze) {
+        if (maze.isEmpty()) {
             return false;
         }
 
+        int rows = maze.size();
+        int cols = maze.get(0).length();
+
+        int[][] mazeArray = new int[rows][cols];
+        for (int outer = 0; outer < rows; outer++) {
+            for (int inner = 0; inner < cols; inner++) {
+                mazeArray[outer][inner] = Integer.parseInt(String.valueOf(maze.get(outer).charAt(inner)));
+            }
+        }
+
+        // If "first" or "last" space is 0, then we can't have a path
+        if ((mazeArray[0][0] == 0) || (mazeArray[rows - 1][cols - 1] == 0)) {
+            return false;
+        }
+
+        boolean[][] visited = new boolean[rows][cols];
+        for (boolean[] row : visited) {
+            Arrays.fill(row, false);
+        }
+
+        // Since we know we're starting in the top left corner of the maze, parentDir = 0 or 3 is fine.
+        return isThereAPath(mazeArray, visited, rows, cols, 0, 0, 0);
+    }
+
+
+    /**
+     * Recursively depth-first searches through mazeArray for a path of 1's to the last (bottom right) entry.
+     *
+     * @param mazeArray A 2D-array of ints, 1 being a "traversable" space, 0 being not-traversable.
+     * @param visited   A 2D-array of booleans representing which spaces have already been searched.
+     * @param rows      Total number of rows in the maze.
+     * @param cols      Total number of columns in the maze.
+     * @param curRow    The current row being searched (y-coordinate).
+     * @param curCol    The current column being searched (x-coordinate).
+     * @param parentDir Int representing which direction the parent call came from.
+     *                  0 - up    (row-1)
+     *                  1 - right (col+1)       - - 0 - -
+     *                  2 - down  (row+1)       - 3 C 1 -
+     *                  3 - left  (col-1)       - - 2 - -
+     * @return False if current space cannot be traversed (path does not exist this way), True otherwise
+     */
+    private static boolean isThereAPath(int[][] mazeArray,
+                                        boolean[][] visited,
+                                        int rows,
+                                        int cols,
+                                        int curRow,
+                                        int curCol,
+                                        int parentDir) {
+        if (visited[curRow][curCol]) { // Already visited space
+            return false;
+        }
+        visited[curRow][curCol] = true;
+
+        if (mazeArray[curRow][curCol] == 0) { // Haven't visited space, but it's not traversable
+            return false;
+        } else if ((curRow == (rows - 1)) && (curCol == (cols - 1))) { // End condition! We made it!
+            return true;
+        }
+
+        // Check if path is up
+        if (((curRow - 1) >= 0) && (parentDir != 0) &&
+                isThereAPath(mazeArray, visited, rows, cols, curRow - 1, curCol, 2)) {
+            return true;
+        } // Check if path is right
+        else if (((curCol + 1) < cols) && (parentDir != 1) &&
+                isThereAPath(mazeArray, visited, rows, cols, curRow, curCol + 1, 3)) {
+            return true;
+        } // Check if path is down
+        else if (((curRow + 1) < rows) && (parentDir != 2) &&
+                isThereAPath(mazeArray, visited, rows, cols, curRow + 1, curCol, 0)) {
+            return true;
+        } // Check if path is left
+        else {
+            return ((curCol - 1) >= 0) && (parentDir != 3) &&
+                    isThereAPath(mazeArray, visited, rows, cols, curRow, curCol - 1, 1);
+        }
     }
 
 }
