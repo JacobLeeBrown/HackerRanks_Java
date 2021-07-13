@@ -1,3 +1,4 @@
 # HackerRanks_Java
 
-A repo to save work regarding HackerRank questions.
+This repo started as a personal workspace for completing HackerRank questions in Java, but now extends to any general 
+coding questions I come across.
