@@ -3,7 +3,7 @@ package binarytree;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class BinaryTreeMain {
+public class MeanBinaryTreeMain {
 
     /* Design a naive integer BinaryTree where:
      *  1. Each subtree tracks its mean value
@@ -12,14 +12,14 @@ public class BinaryTreeMain {
      *  4. Methods to access any subtree and get the subtree's mean
      */
 
-    private BinaryTree theTree;
+    private MeanBinaryTree theTree;
     private ArrayList<Integer> elems = new ArrayList<>();
 
-    public BinaryTreeMain() {}
+    public MeanBinaryTreeMain() {}
 
     public boolean addElem(int n) {
         if (elems.isEmpty()) {
-            theTree = new BinaryTree(n);
+            theTree = new MeanBinaryTree(n);
             elems.add(n);
             return true;
         }
@@ -61,16 +61,16 @@ public class BinaryTreeMain {
         return theTree.getDepth();
     }
 
-    public static class BinaryTree {
+    public static class MeanBinaryTree {
 
         public int root;
         public int sum;
         public int nodes;
 
-        public BinaryTree leftChild;
-        public BinaryTree rightChild;
+        public MeanBinaryTree leftChild;
+        public MeanBinaryTree rightChild;
 
-        public BinaryTree(int n) {
+        public MeanBinaryTree(int n) {
             root = n;
             sum = n;
             nodes = 1;
@@ -79,7 +79,7 @@ public class BinaryTreeMain {
         public void addElem(int n) {
             if (n < root) {
                 if (Objects.isNull(leftChild)) {
-                    leftChild = new BinaryTree(n);
+                    leftChild = new MeanBinaryTree(n);
                 }
                 else {
                     leftChild.addElem(n);
@@ -87,7 +87,7 @@ public class BinaryTreeMain {
             }
             else { // n > root -> can't be equal due to outside checks
                 if (Objects.isNull(rightChild)) {
-                    rightChild = new BinaryTree(n);
+                    rightChild = new MeanBinaryTree(n);
                 }
                 else {
                     rightChild.addElem(n);

@@ -4,13 +4,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BinaryTreeMainTest {
+class MeanBinaryTreeMainTest {
 
-    private BinaryTreeMain target;
+    private MeanBinaryTreeMain target;
 
     @Test
     public void testEmptyTree() {
-        target = new BinaryTreeMain();
+        target = new MeanBinaryTreeMain();
 
         assertEquals(0, target.getNodes());
         assertEquals(0, target.getMean());
@@ -19,7 +19,7 @@ class BinaryTreeMainTest {
 
     @Test
     public void testAddInitialElem() {
-        target = new BinaryTreeMain();
+        target = new MeanBinaryTreeMain();
 
         boolean treeChanged = target.addElem(5);
 
@@ -31,7 +31,7 @@ class BinaryTreeMainTest {
 
     @Test
     public void testAddSeveralElems() {
-        target = new BinaryTreeMain();
+        target = new MeanBinaryTreeMain();
 
         boolean treeChanged1 = target.addElem(5);
         boolean treeChanged2 = target.addElem(2);
@@ -53,7 +53,7 @@ class BinaryTreeMainTest {
 
     @Test
     public void testTryingToAddElemAlreadyInTreeDoesNothing() {
-        target = new BinaryTreeMain();
+        target = new MeanBinaryTreeMain();
 
         boolean treeChanged1 = target.addElem(5);
         boolean treeChanged2 = target.addElem(2);
@@ -75,7 +75,7 @@ class BinaryTreeMainTest {
 
     @Test
     public void testRemoveElemFromEmptyTree() {
-        target = new BinaryTreeMain();
+        target = new MeanBinaryTreeMain();
 
         boolean treeChanged = target.removeElem(5);
 
@@ -87,7 +87,7 @@ class BinaryTreeMainTest {
 
     @Test
     public void testRemoveOnlyElemFromTree() {
-        target = new BinaryTreeMain();
+        target = new MeanBinaryTreeMain();
 
         boolean treeChanged1 = target.addElem(5);
         boolean treeChanged2 = target.removeElem(5);
@@ -100,7 +100,7 @@ class BinaryTreeMainTest {
 
     @Test
     public void testRemoveElemThatIsNotInTreeDoesNothing() {
-        target = new BinaryTreeMain();
+        target = new MeanBinaryTreeMain();
 
         target.addElem(5);
         boolean treeChanged = target.removeElem(2);
@@ -113,7 +113,7 @@ class BinaryTreeMainTest {
 
     @Test
     public void testRemoveMultipleElems() {
-        target = new BinaryTreeMain();
+        target = new MeanBinaryTreeMain();
 
         instantiateBasicTree(target);
 
@@ -139,7 +139,7 @@ class BinaryTreeMainTest {
         assertEquals(2, target.getDepth());
     }
 
-    private void instantiateBasicTree(BinaryTreeMain target) {
+    private void instantiateBasicTree(MeanBinaryTreeMain target) {
         target.addElem(5);
         target.addElem(2);
         target.addElem(8);
