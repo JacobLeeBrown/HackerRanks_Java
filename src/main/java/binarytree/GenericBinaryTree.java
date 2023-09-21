@@ -19,6 +19,7 @@ public class GenericBinaryTree<T> {
         this.compareFunc = compareFunc;
     }
 
+    // TODO: Does not support balancing
     public void addElem(T n) {
         if (compareFunc.apply(n, root) < 0) {
             if (Objects.isNull(leftChild)) {
@@ -38,36 +39,68 @@ public class GenericBinaryTree<T> {
         }
     }
 
-    // Returns whether or not the tree is empty, indicating to the parent to clear it
+    // Returns whether current tree should be removed due to being empty
+    // TODO: Does not support balancing
     public boolean removeElem(T n) {
+        boolean leftNull = Objects.isNull(leftChild);
+        boolean rightNull = Objects.isNull(rightChild);
         if (compareFunc.apply(n, root) == 0) {
-            T newRoot;
-            boolean leftNull = Objects.isNull(leftChild);
-            boolean rightNull = Objects.isNull(rightChild);
+            // This is the node to remove
             if (leftNull && rightNull) {
+                // This node is a leaf node and should be removed
                 return true;
             }
             else if (leftNull) {
-                newRoot = rightChild.root;
-                boolean isEmpty = rightChild.removeElem(newRoot);
-                if (isEmpty) rightChild = null;
+                replaceWith(rightChild);
+                return false;
             }
-            else { // else right is or is not null, doesn't matter since we're being naive
-                newRoot = leftChild.root;
-                boolean isEmpty = leftChild.removeElem(newRoot);
-                if (isEmpty) leftChild = null;
+            else if (rightNull) {
+                replaceWith(leftChild);
+                return false;
             }
-            root = newRoot;
+            else {
+                // Both children are preset
+                T newRoot = popGreatestChild(leftChild);
+                if (compareFunc.apply(newRoot, leftChild.root) == 0) {
+                    leftChild = null;
+                }
+                root = newRoot;
+            }
         }
-        else if (compareFunc.apply(n, root) < 0) {
+        else if (compareFunc.apply(n, root) < 0 && !leftNull) {
             boolean isEmpty = leftChild.removeElem(n);
             if (isEmpty) leftChild = null;
         }
-        else { // n > root
+        else if (compareFunc.apply(n, root) > 0 && !rightNull) {
             boolean isEmpty = rightChild.removeElem(n);
             if (isEmpty) rightChild = null;
         }
         return false;
+    }
+
+    private T popGreatestChild(GenericBinaryTree<T> tree) {
+        T res;
+        if (Objects.isNull(tree.rightChild)) {
+            // Found right most node, make replacements (if needed) and return
+            res = tree.root;
+            if (Objects.nonNull(tree.leftChild))
+                tree.replaceWith(tree.leftChild);
+        }
+        else {
+            // Keep searching!
+            res = tree.popGreatestChild(tree.rightChild);
+            // If greatest child was right child, then pop that sucker
+            if (tree.compareFunc.apply(res, tree.rightChild.root) == 0) {
+                tree.rightChild = null;
+            }
+        }
+        return res;
+    }
+
+    private void replaceWith(GenericBinaryTree<T> tree) {
+        root = tree.root;
+        leftChild = tree.leftChild;
+        rightChild = tree.rightChild;
     }
 
     public int getDepth() {
@@ -85,6 +118,10 @@ public class GenericBinaryTree<T> {
         res.addAll(rightList);
 
         return res;
+    }
+
+    public boolean isLeaf() {
+        return Objects.isNull(leftChild) && Objects.isNull(rightChild);
     }
 
 }
