@@ -2,8 +2,6 @@ package common;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class SortedListTest {
@@ -12,22 +10,18 @@ class SortedListTest {
     public void testAddElem() {
         SortedList<Integer> target = new SortedList<>(Integer::compareTo);
 
-        target.addElem(5);
-        target.addElem(10);
-        target.addElem(3);
-        target.addElem(4);
-        target.addElem(12);
-        target.addElem(8);
+        target.addElems(5, 10, 3, 4, 12, 8);
 
-        ArrayList<Integer> expected = new ArrayList<>();
-        expected.add(3);
-        expected.add(4);
-        expected.add(5);
-        expected.add(8);
-        expected.add(10);
-        expected.add(12);
+        assertTrue(target.isEqualTo(3, 4, 5, 8, 10, 12));
+    }
 
-        assertEquals(expected, target.elems);
+    @Test
+    public void testAddElem_duplicates() {
+        SortedList<Integer> target = new SortedList<>(Integer::compareTo);
+
+        target.addElems(5, 10, 3, 5, -1, 0, 0, 10, 7, 5);
+
+        assertTrue(target.isEqualTo(-1, 0, 0, 3, 5, 5, 5, 7, 10, 10));
     }
 
 }

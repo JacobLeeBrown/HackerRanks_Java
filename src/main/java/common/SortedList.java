@@ -22,6 +22,13 @@ public class SortedList<T> {
         addElem(elem, 0, elems.size());
     }
 
+    @SafeVarargs
+    public final void addElems(T... elems) {
+        for (T elem : elems) {
+            this.addElem(elem);
+        }
+    }
+
     private void addElem(T elem, int startIdx, int endIdx) {
         if (startIdx == endIdx) {
             elems.add(startIdx, elem);
@@ -39,6 +46,19 @@ public class SortedList<T> {
                 addElem(elem, midIdx + 1, endIdx);
             }
         }
+    }
+
+    @SafeVarargs
+    public final boolean isEqualTo(T... other) {
+        if (elems.size() != other.length) {
+            return false;
+        }
+        for (int i = 0; i < elems.size(); i++) {
+            if (compareFunc.apply(elems.get(i), other[i]) != 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
